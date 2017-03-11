@@ -1,0 +1,58 @@
+#include<stdio.h>
+#include<math.h>
+
+int Huang[9]={0};
+int count=0;
+
+int check(int a,int b[9])//当皇后摆放正确返回1，否则返回0.
+{
+    int i;
+	for(i=1;i<a;i++)
+	{
+		if(b[a]==b[i]||abs(a-i)==abs(b[a]-b[i]))
+		return 0;
+	}
+	return 1;
+}
+
+void place()
+{
+    int i,j,k=1,t=1;
+	while(k>=1)
+        //我对于k>=1的理解是当k减到0时，说明第一行的可能情况已经没有了，所以结束函数。
+    {
+        Huang[k]++;
+        while(check(k,Huang)==0&&Huang[k]<9)
+            //当皇后位置摆放错误而且处于棋盘范围之内时，当前皇后位置向后挪动一格
+        {
+            Huang[k]++;
+        }
+        //**************皇后范围超出或者皇后位置正确******************
+        if(Huang[k]<9&&k==8)
+        {
+            //当当前皇后位置在棋盘范围之内而且已经摆放8个皇后，输出。
+            count++;
+            for(i=1;i<=8;i++)
+                printf("%d ",Huang[i]);
+            printf("\n");
+        }
+            //皇后位置在棋盘范围内而且没有摆放完8个皇后，进行下一行的摆放
+        else if(Huang[k]<9&&k<9)
+        {
+            k++;
+        }
+            //皇后当前的行位置超出范围
+        else
+        {
+            Huang[k]=0;//将当前行清零
+            k--;//回溯
+        }
+    }
+}
+
+int main()
+{
+    place();
+    printf("%d",count);
+	return 0;
+}
